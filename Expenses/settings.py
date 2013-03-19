@@ -1,8 +1,15 @@
 # Django settings for learning project.
 import os
+from os.path import abspath, basename, dirname, join, normpath
+from sys import path
 
-PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
-CODE_ROOT_DIR = os.path.join(PROJECT_PATH, os.path.pardir)
+
+DJANGO_ROOT = dirname(dirname(abspath(__file__)))
+SITE_ROOT = DJANGO_ROOT
+SITE_NAME = basename(DJANGO_ROOT)
+
+path.append(DJANGO_ROOT)
+
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -54,7 +61,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = os.path.join(CODE_ROOT_DIR, "media")
+MEDIA_ROOT = normpath(join(SITE_ROOT, 'media'))
 MEDIA_URL = "/media/"
 
 
@@ -62,7 +69,7 @@ MEDIA_URL = "/media/"
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = os.path.join(CODE_ROOT_DIR, "static")
+STATIC_ROOT = normpath(join(SITE_ROOT, 'assets'))
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -70,7 +77,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_PATH, "static"),
+    normpath(join(SITE_ROOT, 'static')),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -113,7 +120,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_PATH, "templates"),
+    normpath(join(SITE_ROOT, 'templates')),
 )
 
 DJANGO_APPS = (

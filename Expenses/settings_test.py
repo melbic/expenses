@@ -16,7 +16,7 @@ INSTALLED_APPS += \
     )
 
 PROJECT_APPS = (
-    'backend',
+    'receipts',
 )
 
 JENKINS_TASKS = (

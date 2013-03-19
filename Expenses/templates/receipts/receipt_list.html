@@ -1,0 +1,9 @@
+{% extends "Expenses_base.html" %}
+
+{% block title %} Listing Receipts {% endblock %}
+
+{% block content %}
+    {% for receipt in object_list %}
+        <p>{{ receipt.title }} : {{ receipt.amount_chf }}</p>
+    {% endfor %}
+{% endblock %}

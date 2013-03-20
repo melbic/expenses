@@ -15,5 +15,6 @@
 
 {% block content %}
     <p>{{ receipt.title }}</p>
-        <p>{{ receipt.amount_chf }}</p>
+     <p>{{ receipt.amount_chf }}</p>
+    <p> User {{ receipt.user }} has {{ receipt.number_of_receipts }} receipts</p>
 {% endblock %}

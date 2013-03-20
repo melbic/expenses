@@ -8,20 +8,22 @@ class Receipt(models.Model):
     """
     A receipt
     """
+    number = models.PositiveIntegerField(editable=False)
     user = models.ForeignKey(User)
-    description = models.CharField(max_length=255)
     title = models.CharField(max_length=50, null=False)
-    number = models.IntegerField()
-    slug = models.SlugField()
+    description = models.CharField(max_length=255)
     amount_chf = models.DecimalField('Cost in CHF', max_digits=6, decimal_places=2)
+
+    def save(self, *args, **kwargs):
+        self.number = self.user.receipt_set.count()+1
+        super(Receipt, self).save(args, kwargs)
+
+    def number_of_receipts(self):
+        return self.user.receipt_set.count()
 
     def __unicode__(self):
         return smart_text(self.title)
 
     @models.permalink
     def get_absolute_url(self):
-        return ('detail', (), {"slug": self.slug})
-
-# class ReceiptForm(ModelForm):
-#     class Meta:
-#         model = Receipt
+        return ('detail', (), {"pk": self.pk})

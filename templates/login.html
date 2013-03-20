@@ -1,0 +1,63 @@
+{% extends "Expenses_base.html" %}
+{% load staticfiles %}
+{% load url from future %}
+{% load widget_tweaks %}
+
+{% block content %}
+<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+	<!-- Login Fenster
+		================================================== -->
+	<div id="content_box" class="container login {% if form.errors %}error{% endif %}">
+
+		<div class="row-gray row">
+
+            {% if form.errors %}
+
+            <div class="offset1 errorlist">
+                <h2> Zugangsdaten falsch </h2>
+
+                <p> "Die angegebenen Eingabedaten sind ung&uuml;ltig. Email oder Passwort ist falsch angegeben." </p>
+                <br />
+            </div>
+
+            {% endif %}
+
+            <div class="offset1">
+                <div class="controls">
+                    <label for="inputUser"> "Email" </label>
+                    {{ form.username|add_class:"input7" }}
+                </div>
+
+                <div class="controls">
+                    <label for="inputPassword"> "Passwort"</label>
+                    {{ form.password|add_class:"input7" }}
+                    <br />
+                </div>
+
+                <div class="controls last-child">
+                    <label class="checkbox light">
+                        <input type="checkbox" value="remember-me" class="checkbox text-gray">  "Angemeldet bleiben"
+                    </label>
+                    <a href="/lost_password" class="text-gray" for="inputPassword"><small> "Passwort vergessen" </small></a><br/>
+                </div>
+            </div>
+		</div>
+
+		<div class="content_footer_box">
+			<div class="inner">
+				<div class="nav">
+                    {% if development %}
+                    <a href="/registration" class="text-gray"> "Registrieren" </a>
+                    {% endif %}
+					<input class="btn btn-large btn-primary" type="submit" value="Senden" >
+				</div>
+			</div><!-- /inner -->
+		</div><!-- /content_footer_box -->
+	</div>
+
+	{% csrf_token %}
+	<input type="hidden" name="next" value="{{ next }}" />
+
+</form>
+
+{% endblock %}

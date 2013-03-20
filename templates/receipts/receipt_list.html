@@ -1,9 +1,20 @@
 {% extends "Expenses_base.html" %}
 
-{% block title %} Listing Receipts {% endblock %}
-
+{% block page_title %} Receipts {% endblock %}
 {% block content %}
-    {% for receipt in object_list %}
-        <p>{{ receipt.title }} : {{ receipt.amount_chf }}</p>
+    <div class="row show-grid">
+
+    {%  for user in users %}
+        <div class="span9">
+    {{ user }}
+
+    {% for receipt in user.receipt_set.all %}
+    <div class="row">
+        <div class="span4" href={{ receipt.id }}>{{ receipt.title }}</div>
+        <div class="span5">{{ receipt.amount_chf }}</div>
+    </div>
     {% endfor %}
+        </div>
+    {% endfor %}
+    </div>
 {% endblock %}

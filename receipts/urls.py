@@ -12,12 +12,12 @@ urlpatterns = patterns('',
         name='create'
     ),
     url(
-        regex=r'^(?P<slug>\w+)/$',
+        regex=r'^(?P<pk>\d+)/$',
         view=ReceiptDetailView.as_view(),
         name='detail'
     ),
     url(
-        regex=r'^(?P<pk>\w+)/update/$',
+        regex=r'^(?P<pk>\d+)/update/$',
         view=ReceiptUpdateView.as_view(),
         name='update'
     ),

@@ -4,6 +4,7 @@
 <form method="post" action="">
     {% csrf_token %}
     {{ form.as_p }}
+    {{ form.user }}
     <input type="submit" value="save" />
 </form>
 </div>

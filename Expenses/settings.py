@@ -139,6 +139,7 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
     # Database migration helpers:
     'south',
+    'widget_tweaks',
 )
 
 # Apps specific for this project go here.
@@ -206,3 +207,6 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
         }
+
+LOGIN_URL = "/login"
+LOGIN_REDIRECT_URL = "/receipts"

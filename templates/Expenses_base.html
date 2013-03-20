@@ -43,8 +43,12 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+                {% if user.is_authenticated  %}
+                    <li><a href="/logout">Logout</a></li>
+                {% else %}
+                    <li><a href="/login">Login</a></li>
+                {% endif %}
+
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -71,5 +75,7 @@
     <script src="{{ STATIC_URL }}js/project.js"></script>
 
     {% block extra_js %}{% endblock extra_js %}
+
+    <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
   </body>
 </html>

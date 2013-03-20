@@ -42,7 +42,8 @@
           <a class="brand" href="#">Expenses</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
+              <li class="active"><a href="{% url 'home' %}">Home</a></li>
+                <li> <a href="{%  url 'receipts_create' %}">New Receipt</a></li>
                 {% if user.is_authenticated  %}
                     <li><a href="/logout">Logout</a></li>
                 {% else %}

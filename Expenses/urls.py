@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-
+from django.conf import settings
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 from django.views.generic import RedirectView
@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
      url(r'^$',
          RedirectView.as_view(url='/receipts'),
-         name='go_to_receipts'
+         name='home'
      ),
      url(r'^admin/',
          include(admin.site.urls)
@@ -24,7 +24,6 @@ urlpatterns = patterns('',
      url(r'^receipts/',
          include('receipts.urls'), name='receipts'
      ),
-
      url(
          r'^login/$',
          'django.contrib.auth.views.login',
@@ -38,3 +37,10 @@ urlpatterns = patterns('',
          name="logout"
      ),
 )
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+                            url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+                                'document_root': settings.MEDIA_ROOT,
+                                }),
+                            )

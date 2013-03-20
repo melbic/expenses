@@ -1,11 +1,14 @@
 {% extends "Expenses_base.html" %}
 {% block content %}
 <div>
-<form method="post" action="">
+<form method="post" action="" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    {{ form.user }}
-    <input type="submit" value="save" />
+{% if receipt %}
+    <input type="submit" value="delete" formaction="{% url 'receipts_delete' receipt.id %}"/>
+{% endif %}
+
+    <input type="submit" value="save"/>
 </form>
 </div>
 {% endblock %}

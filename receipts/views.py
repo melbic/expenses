@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
-from django.views.generic import DetailView, ListView, CreateView, UpdateView
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from braces.views import LoginRequiredMixin
 from receipts.forms import ReceiptForm
@@ -40,7 +41,7 @@ class ReceiptListView(ListView):
         return context
 
 
-class ReceiptCreateView(LoginRequiredMixin, ReceiptUserAccessMixin, ReceiptActionMixin, CreateView):
+class ReceiptCreateView(LoginRequiredMixin, ReceiptActionMixin, CreateView):
 
     form_class = ReceiptForm
     model = Receipt
@@ -59,3 +60,8 @@ class ReceiptUpdateView(LoginRequiredMixin, ReceiptUserAccessMixin, ReceiptActio
     form_class = ReceiptForm
     model = Receipt
     action = 'updated'
+
+class ReceiptDeleteView(LoginRequiredMixin, ReceiptActionMixin, DeleteView):
+    model = Receipt
+    action= 'deleted'
+    success_url = reverse_lazy('receipts_index')

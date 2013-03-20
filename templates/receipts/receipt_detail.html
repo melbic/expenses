@@ -1,5 +1,5 @@
 {% extends "Expenses_base.html" %}
-{% block title %} Receipt Details {% endblock %}
+{% block page_title %} Receipt Details {% endblock %}
 
 {% if messages %}
     <ul class="messages">
@@ -14,7 +14,17 @@
 {% endif %}
 
 {% block content %}
-    <p>{{ receipt.title }}</p>
-     <p>{{ receipt.amount_chf }}</p>
-    <p> User {{ receipt.user }} has {{ receipt.number_of_receipts }} receipts</p>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span2">
+                <img src="{{ receipt.picture.url }}">
+            </div>
+            <div class="span10">
+             <p>{{ receipt.title }}</p>
+             <p>{{ receipt.amount_chf }}</p>
+             <p> User {{ receipt.user }} has {{ receipt.number_of_receipts }} receipts</p>
+             </div>
+            </div>
+    </div>
+    <a href="{% url 'receipts_update' receipt.id %}" class="text-gray"> "Edit" </a>
 {% endblock %}

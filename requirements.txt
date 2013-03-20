@@ -6,4 +6,5 @@ django-debug-toolbar==0.9.4
 pep8==1.4.5
 pyflakes==0.6.1
 django-braces==1.0.0
-django-widget_tweaks=1.1.2
+django-widget_tweaks==1.1.2
+PIL==1.1.7

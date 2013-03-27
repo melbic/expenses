@@ -1,22 +1,60 @@
-{% extends "Expenses_base.html" %}
+{% extends "Expenses_logged_in.html" %}
 
 {% block page_title %} Receipts {% endblock %}
 {% block content %}
-    <div class="row show-grid">
+    {{ block.super }}
+    <div id="dialog" title="Confirm delete">Are you sure?</div>
+    <table class="receipts table table-striped" width=auto>
+    <tbody>
+    {% for receipt in object_list %}
+        <tr>
 
-    {%  for user in users %}
-        <div class="span9">
-    {{ user }}
+            <td><a class="detail" href="{{ receipt.get_absolute_url}}"> {{ receipt.title }}</a></td>
+            <td>{{ receipt.amount_chf }}</td>
+            </a>
+        <td><a id="{{ receipt.id }}" href="#" class="delete" >Delete </a></td>
+    </tr>
 
-    {% for receipt in user.receipt_set.all %}
-    <a href="{{ receipt.get_absolute_url}}" >
-    <div class="row">
-        <div class="span4">{{ receipt.title }}</div>
-        <div class="span5">{{ receipt.amount_chf }}</div>
-    </div>
-        </a>
     {% endfor %}
-        </div>
-    {% endfor %}
-    </div>
+    </tbody>
+    </table>
+    {% csrf_token %}
 {% endblock %}
+{% block extra_js %}
+    {{ block.super }}
+    <script type="text/javascript" charset="utf-8">
+    $(function(){
+            $("#dialog").dialog({
+                modal: true,
+                autoOpen:false
+            });
+            $("a.delete").click(function(e) {
+                e.preventDefault();
+                var id = $(this).attr('id');
+                var the_url = "{% url 'receipts_delete' 999 %}".replace (999, id);
+                $("#dialog").dialog('option', 'buttons', {
+                    "Delete": function() {
+                        $.ajax({
+                            headers : {
+                                "X-CSRFToken": $("input[name='csrfmiddlewaretoken']").val()
+                            },
+                            type: "POST",
+                            url: the_url,
+{#                            data: {'pk': id},#}
+                            success: function() {
+                                location.reload();
+                            }
+                        });
+                        $(this).dialog("close");
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
+                    }
+                });
+                $("#dialog").dialog("open");
+                return false;
+            });
+
+        });
+    </script>
+{%  endblock %}

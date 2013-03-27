@@ -14,15 +14,12 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-     url(r'^$',
+    url(r'^$',
          RedirectView.as_view(url='/receipts'),
          name='home'
      ),
      url(r'^admin/',
          include(admin.site.urls)
-     ),
-     url(r'^receipts/',
-         include('receipts.urls'), name='receipts'
      ),
      url(
          r'^login/$',
@@ -36,6 +33,13 @@ urlpatterns = patterns('',
          'Expenses.views.logout_view',
          name="logout"
      ),
+     url(r'^receipts/',
+         include('receipts.urls'),
+         name='receipts'
+     ),
+     url(r'^projects/',
+         include('projects.urls'),
+         name='projects'),
 )
 
 if settings.DEBUG:

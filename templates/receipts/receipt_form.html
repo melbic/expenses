@@ -1,5 +1,8 @@
-{% extends "Expenses_base.html" %}
+{% extends "Expenses_logged_in.html" %}
+
+{% block page_title %} Create/Edit Receipt {% endblock %}
 {% block content %}
+    {{ block.super }}
 <div>
 <form method="post" action="" enctype="multipart/form-data">
     {% csrf_token %}

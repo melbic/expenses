@@ -140,11 +140,13 @@ THIRD_PARTY_APPS = (
     # Database migration helpers:
     'south',
     'widget_tweaks',
+    'parsley',
 )
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
     'receipts',
+    'projects',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -180,33 +182,43 @@ LOGGING = {
 }
 
 # debug_toolbar settings
-if DEBUG:
-    INTERNAL_IPS = ('127.0.0.1',)
-    MIDDLEWARE_CLASSES += (
-        'debug_toolbar.middleware.DebugToolbarMiddleware',
-    )
-
-    INSTALLED_APPS += (
-        'debug_toolbar',
-    )
-
-    DEBUG_TOOLBAR_PANELS = (
-        'debug_toolbar.panels.version.VersionDebugPanel',
-        'debug_toolbar.panels.timer.TimerDebugPanel',
-        'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
-        'debug_toolbar.panels.headers.HeaderDebugPanel',
-        #'debug_toolbar.panels.profiling.ProfilingDebugPanel',
-        'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
-        'debug_toolbar.panels.sql.SQLDebugPanel',
-        'debug_toolbar.panels.template.TemplateDebugPanel',
-        'debug_toolbar.panels.cache.CacheDebugPanel',
-        'debug_toolbar.panels.signals.SignalDebugPanel',
-        'debug_toolbar.panels.logger.LoggingPanel',
-    )
-
-    DEBUG_TOOLBAR_CONFIG = {
-        'INTERCEPT_REDIRECTS': False,
-        }
+# if DEBUG:
+#     INTERNAL_IPS = ('127.0.0.1',)
+#     MIDDLEWARE_CLASSES += (
+#         'debug_toolbar.middleware.DebugToolbarMiddleware',
+#     )
+#
+#     INSTALLED_APPS += (
+#          'debug_toolbar',
+#     )
+#
+#     DEBUG_TOOLBAR_PANELS = (
+#         'debug_toolbar.panels.version.VersionDebugPanel',
+#         'debug_toolbar.panels.timer.TimerDebugPanel',
+#         'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
+#         'debug_toolbar.panels.headers.HeaderDebugPanel',
+#         #'debug_toolbar.panels.profiling.ProfilingDebugPanel',
+#         'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+#         'debug_toolbar.panels.sql.SQLDebugPanel',
+#         'debug_toolbar.panels.template.TemplateDebugPanel',
+#         'debug_toolbar.panels.cache.CacheDebugPanel',
+#         'debug_toolbar.panels.signals.SignalDebugPanel',
+#         'debug_toolbar.panels.logger.LoggingPanel',
+#     )
+#
+#     DEBUG_TOOLBAR_CONFIG = {
+#         'INTERCEPT_REDIRECTS': False,
+#         }
 
 LOGIN_URL = "/login"
 LOGIN_REDIRECT_URL = "/receipts"
+
+TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
+                               "django.core.context_processors.debug",
+                               "django.core.context_processors.i18n",
+                               "django.core.context_processors.media",
+                               "django.core.context_processors.static",
+                               "django.core.context_processors.tz",
+                               "django.contrib.messages.context_processors.messages",
+                                'django.core.context_processors.request'
+)

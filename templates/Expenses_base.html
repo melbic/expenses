@@ -1,3 +1,4 @@
+{% load extra_tags %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -31,7 +32,7 @@
 
   <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top navbar-static">
       <div class="navbar-inner">
         <div class="container">
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -39,17 +40,21 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Expenses</a>
+           <a class="brand {% active request "receipts_index" %}"  href="{% url 'home' %}">Expenses</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="{% url 'home' %}">Home</a></li>
-                <li> <a href="{%  url 'receipts_create' %}">New Receipt</a></li>
+              <li class="{% active request "receipts_index" %}"><a href="{% url 'home' %}">Home</a></li>
+                <li class="{% active request "receipts_create" %}"> <a href="{%  url 'receipts_create' %}"> New Receipt</a></li>
+                <li class="{% active request "project_index" %}"><a href="{%  url 'project_index' %}">Project-Management</a></li>
+                <ul class="nav pull-right">
+                <li>
                 {% if user.is_authenticated  %}
-                    <li><a href="/logout">Logout</a></li>
+                    <a href="/logout">Logout
                 {% else %}
-                    <li><a href="/login">Login</a></li>
+                   <a href="/login">Login
                 {% endif %}
-
+                    </a></li>
+                </ul>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -61,7 +66,19 @@
       <h1>{% block page_title %}Example Base Template{% endblock page_title %}</h1>
 
       {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
+          <div class="messages">
+              {% if messages %}
+              <div class="messages">
+                  <ul>
+                      {% for message in messages %}
+                          <li class="{{ message.tag }}">
+                              {{ message }}
+                          </li>
+                      {% endfor %}
+                  </ul>
+              </div>
+              {% endif %}
+          </div>
       {% endblock content %}
 
     </div> <!-- /container -->
@@ -70,13 +87,19 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.min.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script src="https://raw.github.com/guillaumepotier/Parsley.js/master/dist/parsley-standalone.min.js"></script>
 
     <!-- place project specific Javascript in this file -->
     <script src="{{ STATIC_URL }}js/project.js"></script>
 
     {% block extra_js %}{% endblock extra_js %}
-
     <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
   </body>
+    <footer>
+        {% block footer %}
+
+        {% endblock footer %}
+    </footer>
 </html>

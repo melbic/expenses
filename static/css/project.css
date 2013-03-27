@@ -4,7 +4,7 @@
 }
 .show-grid [class*="span"] {
     background-color: #eee;
-    text-align: left;
+    text-align: center;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -26,4 +26,28 @@
 }
 .show-grid [class*="span"] [class*="span"] [class*="span"] {
     background-color: #999;
+}
+
+tr.hover {
+    color: slategrey;
+    cursor: pointer;
+}
+
+footer {
+    background-color: #000000;
+    color: #999;
+    position:absolute;
+    width:100%;
+    bottom:0px;
+}
+
+input.parsley-success, textarea.parsley-success {
+    color: #468847 !important;
+    background-color: #DFF0D8 !important;
+    border: 1px solid #D6E9C6 !important;
+}
+input.parsley-error, textarea.parsley-error {
+    color: #B94A48 !important;
+    background-color: #F2DEDE !important;
+    border: 1px solid #EED3D7 !important;
 }

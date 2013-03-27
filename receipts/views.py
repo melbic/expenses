@@ -1,11 +1,9 @@
-from django.contrib.auth.models import User
-from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from braces.views import LoginRequiredMixin
 from receipts.forms import ReceiptForm
-from receipts.models import Receipt
+from receipts.models import Receipt, ProjectParticipation
 
 
 class ReceiptActionMixin(object):
@@ -15,53 +13,51 @@ class ReceiptActionMixin(object):
         messages.info(self.request, msg)
         return super(ReceiptActionMixin, self).form_valid(form)
 
-class ReceiptUserAccessMixin(object):
-    """
-    Tests if logged in User is allowed to see the called view
-    """
 
-    def dispatch(self, request, *args, **kwargs):
-        receipt_user = Receipt.objects.get(id=self.kwargs["pk"]).user
-        if request.user != receipt_user:
-            raise PermissionDenied
-        return super(ReceiptUserAccessMixin, self).dispatch(request,
-                                                             *args, **kwargs)
+class UserFilterMixin(object):
+
+    def get_queryset(self):
+        # user=self.request.user
+        return super(UserFilterMixin, self).get_queryset().filter(project_participation__user = self.request.user)
 
 
-class ReceiptDetailView(LoginRequiredMixin, ReceiptUserAccessMixin, DetailView):
+class ReceiptDetailView(LoginRequiredMixin, UserFilterMixin, DetailView):
     model = Receipt
 
 
-class ReceiptListView(ListView):
+class ReceiptListView(LoginRequiredMixin, UserFilterMixin, ListView):
     model = Receipt
 
-    def get_context_data(self, **kwargs):
-        context = super(ReceiptListView, self).get_context_data(**kwargs)
-        context['users'] = User.objects.all()
-        return context
 
-
-class ReceiptCreateView(LoginRequiredMixin, ReceiptActionMixin, CreateView):
+class ReceiptCreateView(LoginRequiredMixin, UserFilterMixin, ReceiptActionMixin, CreateView):
 
     form_class = ReceiptForm
     model = Receipt
     action = 'created'
 
-    def form_valid(self, form):
-        receipt = form.save(commit=False)
-        receipt.user = self.request.user
-        return super(ReceiptCreateView, self).form_valid(form)
+    def get_form(self, form_class):
+        form = super(ReceiptCreateView, self).get_form(form_class)
+        form.fields['project_participation'].queryset = ProjectParticipation.objects.filter(user=self.request.user)
+        return form
 
-    def get_initial(self):
-        return {'user': self.request.user}
+    # def form_valid(self, form):
+    #     receipt = form.save(commit=False)
+    #     receipt.user = self.request.user
+    #     return super(ReceiptCreateView, self).form_valid(form)
+    #
+    # def get_initial(self):
+    #     return {'user': self.request.user}
 
 
-class ReceiptUpdateView(LoginRequiredMixin, ReceiptUserAccessMixin, ReceiptActionMixin, UpdateView):
+class ReceiptUpdateView(LoginRequiredMixin, UserFilterMixin, ReceiptActionMixin, UpdateView):
     form_class = ReceiptForm
     model = Receipt
     action = 'updated'
 
-class ReceiptDeleteView(LoginRequiredMixin, ReceiptActionMixin, DeleteView):
+
+class ReceiptDeleteView(LoginRequiredMixin, UserFilterMixin, ReceiptActionMixin, DeleteView):
     model = Receipt
-    action= 'deleted'
+    action = 'deleted'
     success_url = reverse_lazy('receipts_index')
+
+

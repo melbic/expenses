@@ -1,24 +1,16 @@
-{% extends "Expenses_base.html" %}
+{% extends "Expenses_logged_in.html" %}
+
 {% block page_title %} Receipt Details {% endblock %}
 
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li id="message_{{ forloop.counter }}"
-                    {% if message.tags %} class="{{ message.tags }}"
-                    {% endif %}>
-                {{ message }}
-            </li>
-        {% endfor %}
-    </ul>
-{% endif %}
-
 {% block content %}
+    {{ block.super }}
     <div class="container-fluid">
         <div class="row-fluid">
+            {%  if receipt.picture %}
             <div class="span2">
                 <img src="{{ receipt.picture.url }}">
             </div>
+            {% endif %}
             <div class="span10">
              <p>{{ receipt.title }}</p>
              <p>{{ receipt.amount_chf }}</p>

@@ -1,0 +1,22 @@
+{% extends "Expenses_base.html" %}
+
+{% block page_title %} Receipts {% endblock %}
+{% block content %}
+    <div class="row show-grid">
+
+    {%  for user in users %}
+        <div class="span9">
+    {{ user }}
+
+    {% for receipt in user.receipt_set.all %}
+    <a href="{{ receipt.get_absolute_url}}" >
+    <div class="row">
+        <div class="span4">{{ receipt.title }}</div>
+        <div class="span5">{{ receipt.amount_chf }}</div>
+    </div>
+        </a>
+    {% endfor %}
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "Expenses_logged_in.html" %}
+
+{% block page_title %} Project Details {% endblock %}
+{% block content %}
+    {{ block.super }}
+    <h2>{{ project.name }}</h2>
+
+    <div class="content">
+        <p>
+            {{ project.description }}
+        </p>
+    <span>
+        Start date: {{ project.start_date }}
+    </span>
+        {% if project.end_date %}
+    <span>
+        End date: {{ project.end_date }}
+    </span>
+        {% endif %}
+    </div>
+
+    {% if project.projectparticipation_set.all %}
+        <h2>Participates</h2>
+        <div id="dialog" title="Confirm delete">Are you sure?</div>
+                <table class="participates table table-striped" width=auto>
+                    <tbody>
+                    {% for pp in project.projectparticipation_set.all  %}
+                        <tr>
+                            <td>{{ pp.user }}</td>
+                            <td>{{ pp.is_paid }}</td>
+                            <td><a id="{{ pp.id }}" href="#" class="delete" >Remove </a></td>
+                        </tr>
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+    {% endif %}
+
+    <br />
+
+    <h2>Add User</h2>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" name="submit" value="Add" />
+    </form>
+{% endblock content %}
+{%  block extra_js %}
+    {{ block.super }}
+    <script type="text/javascript" charset="utf-8">
+        $(function(){
+            $("#dialog").dialog({
+                modal: true,
+                autoOpen:false
+            });
+            $("a.delete").click(function(e) {
+                e.preventDefault();
+                var slug = "{{  project.slug }}"
+                var id = $(this).attr('id');
+                var the_url = "{% url 'participation_remove' 999 888 %}".replace (999, slug).replace(888, id);
+                $("#dialog").dialog('option', 'buttons', {
+                    "Delete": function() {
+                        $.ajax({
+                            headers : {
+                                "X-CSRFToken": $("input[name='csrfmiddlewaretoken']").val()
+                            },
+                            type: "POST",
+                            url: the_url,
+                            data: {'pk': id},
+                            success: function() {
+                                deleteRow(id);
+                                location.reload();
+                            }
+                        });
+                        $(this).dialog("close");
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
+                    }
+                });
+                $("#dialog").dialog("open");
+                return false;
+            });
+
+        });
+    </script>
+
+{%  endblock extra_js%}

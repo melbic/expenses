@@ -1,0 +1,21 @@
+{% extends "Expenses_logged_in.html" %}
+
+{% block page_title %} Projects {% endblock %}
+{% block content %}
+{{ block.super }}
+    {% for project in object_list %}
+    {% if forloop.counter|divisibleby:"5" or forloop.counter == 1 %}
+    <div class="row-fluid show-grid">
+    {% endif %}
+        <div class="span2"><a href="{{  project.get_absolute_url }}">{{ project.name }}</a></div>
+    {% if forloop.counter|divisibleby:"4" %}
+    </div>
+    {% endif %}
+    {%  endfor %}
+    {% if not object_list.count|divisibleby:"4" %}
+    </div>
+    {% endif %}
+     <div class="row-fluid show-grid">
+        <div class="span8"><a href="{% url 'project_create' %}"> Create new Project</a></div>
+     </div>
+{% endblock content %}

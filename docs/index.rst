@@ -12,6 +12,8 @@ Contents:
    :maxdepth: 2
 
 models.rst
+views.rst
+
 
 Indices and tables
 ==================

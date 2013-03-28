@@ -20,6 +20,9 @@ class Receipt(models.Model):
         super(Receipt, self).save(args, kwargs)
 
     def number_of_receipts(self):
+        """
+        Returns the number of receipts in the same Participation as the specified.
+        """
         return self.participation.receipt_set.count()
 
     def __unicode__(self):

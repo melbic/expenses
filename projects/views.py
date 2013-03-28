@@ -13,6 +13,9 @@ from receipts.models import Receipt
 
 @user_passes_test(lambda u: u.is_staff)
 def add_project(request):
+    """
+    View to add a project.
+    """
     form=ProjectForm(request.POST or None)
     if form.is_valid():
         project=form.save(commit=False)

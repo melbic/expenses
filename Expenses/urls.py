@@ -14,8 +14,9 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^$',
-         RedirectView.as_view(url='/receipts'),
+    url(
+        regex=r'^$',
+         view='Expenses.views.view_expenses',
          name='home'
      ),
      url(r'^admin/',

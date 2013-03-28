@@ -7,27 +7,22 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
-    depends_on = (
-        ("projects", "0001_initial"),
-    )
     def forwards(self, orm):
-        # Adding model 'Receipt'
-        db.create_table(u'receipts_receipt', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('number', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('participation', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['projects.ProjectParticipation'])),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('amount_chf', self.gf('django.db.models.fields.DecimalField')(max_digits=6, decimal_places=2)),
-            ('date', self.gf('django.db.models.fields.DateField')()),
-            ('picture', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
-        ))
-        db.send_create_signal(u'receipts', ['Receipt'])
+        # Deleting field 'Receipt.project_participation'
+        db.delete_column(u'receipts_receipt', 'project_participation_id')
+
+        # Adding field 'Receipt.participation'
+        db.add_column(u'receipts_receipt', 'participation',
+                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['projects.ProjectParticipation']),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting model 'Receipt'
-        db.delete_table(u'receipts_receipt')
+
+        # User chose to not deal with backwards NULL issues for 'Receipt.project_participation'
+        raise RuntimeError("Cannot reverse this migration. 'Receipt.project_participation' and its values cannot be restored.")
+        # Deleting field 'Receipt.participation'
+        db.delete_column(u'receipts_receipt', 'participation_id')
 
 
     models = {
@@ -95,7 +90,7 @@ class Migration(SchemaMigration):
             'start_date': ('django.db.models.fields.DateField', [], {})
         },
         u'projects.projectparticipation': {
-            'Meta': {'object_name': 'ProjectParticipation'},
+            'Meta': {'unique_together': "(('user', 'project'),)", 'object_name': 'ProjectParticipation'},
             'bank_account': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['projects.BankAccount']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'pay_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
@@ -109,8 +104,8 @@ class Migration(SchemaMigration):
             'description': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'number': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'participation': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['projects.ProjectParticipation']"}),
             'picture': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'project_participation': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['projects.ProjectParticipation']"}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         }
     }

@@ -34,7 +34,7 @@ class FormTest(TestCase):
         receipt.title = u"Title"
         receipt.amount_chf = 10
         receipt.date = datetime.date(2012,8,2)
-        receipt.project_participation = self.project_participation
+        receipt.participation = self.project_participation
         receipt.save()
         return receipt
 

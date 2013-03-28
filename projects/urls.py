@@ -16,6 +16,12 @@ urlpatterns = patterns('',
                            view='projects.views.view_project',
                            name='projects_detail'
                            ),
+                       url(
+                           regex=r'^detail/(?P<pk>\d+)',
+                           view='projects.views.participation_detail',
+                           name='participation_detail'
+
+                       ),
                         url(
                             regex=r'^(?P<slug>[-\w]+)/(?P<pk>\d+)/delete/$',
                             view='projects.views.participation_remove',

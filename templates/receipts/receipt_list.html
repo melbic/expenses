@@ -6,9 +6,8 @@
     <div id="dialog" title="Confirm delete">Are you sure?</div>
     <table class="receipts table table-striped" width=auto>
     <tbody>
-    {% for receipt in object_list %}
+    {% for receipt in receipts %}
         <tr>
-
             <td><a class="detail" href="{{ receipt.get_absolute_url}}"> {{ receipt.title }}</a></td>
             <td>{{ receipt.amount_chf }}</td>
             </a>

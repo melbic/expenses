@@ -2,6 +2,7 @@
 
 from django import template
 from django.core.urlresolvers import resolve
+from django.db.models import Sum
 
 register = template.Library()
 
@@ -44,3 +45,8 @@ def active(parser, token):
         return ActiveUrlNode(args[1], args[2:])
     except ValueError:
         raise template.TemplateSyntaxError, "%r tag requires at least 2 arguments" % token.contents.split()[0]
+
+
+@register.filter
+def total_sum(receipts_list):
+    return receipts_list.aggregate(sum=Sum('amount_chf'))['sum']

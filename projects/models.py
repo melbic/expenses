@@ -43,7 +43,7 @@ class Project(models.Model):
 
 
 class ProjectParticipation(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name='participations')
     project = models.ForeignKey(Project)
     pay_date = models.DateField(blank=True, null=True)
     bank_account = models.ForeignKey(BankAccount, blank=True, null=True)
@@ -56,3 +56,7 @@ class ProjectParticipation(models.Model):
 
     class Meta:
         unique_together=("user", "project")
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('participation_detail', (), {'pk' : self.id})

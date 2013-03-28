@@ -1,5 +1,7 @@
 {% extends "Expenses_logged_in.html" %}
 
+{% load extra_tags %}
+
 {% block page_title %} Project Details {% endblock %}
 {% block content %}
     {{ block.super }}
@@ -23,16 +25,32 @@
         <h2>Participates</h2>
         <div id="dialog" title="Confirm delete">Are you sure?</div>
                 <table class="participates table table-striped" width=auto>
+                    <thead>
+                        <tr>
+                            <th> User </th>
+                            <th>  Sum </th>
+                            <th> Paid? </th>
+                            <th>  Delete? </th>
+                        </tr>
+                    </thead>
                     <tbody>
                     {% for pp in project.projectparticipation_set.all  %}
                         <tr>
                             <td>{{ pp.user }}</td>
+                            <td class="amount"> {{ pp.receipt_set|total_sum }}</td>
                             <td>{{ pp.is_paid }}</td>
                             <td><a id="{{ pp.id }}" href="#" class="delete" >Remove </a></td>
                         </tr>
-
                     {% endfor %}
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Total</td>
+                            <td class="total"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
                 </table>
     {% endif %}
 
@@ -87,5 +105,15 @@
 
         });
     </script>
+    <script type="text/javascript">
+        $(function()
+                {
+                    function sum_it(the_class)
+                    {
+                        var total= 0;
 
+                    }
+                }
+        )
+    </script>
 {%  endblock extra_js%}

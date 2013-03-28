@@ -18,7 +18,7 @@ class UserFilterMixin(object):
 
     def get_queryset(self):
         # user=self.request.user
-        return super(UserFilterMixin, self).get_queryset().filter(project_participation__user = self.request.user)
+        return super(UserFilterMixin, self).get_queryset().filter(participation__user = self.request.user)
 
 
 class ReceiptDetailView(LoginRequiredMixin, UserFilterMixin, DetailView):
@@ -37,7 +37,7 @@ class ReceiptCreateView(LoginRequiredMixin, UserFilterMixin, ReceiptActionMixin,
 
     def get_form(self, form_class):
         form = super(ReceiptCreateView, self).get_form(form_class)
-        form.fields['project_participation'].queryset = ProjectParticipation.objects.filter(user=self.request.user)
+        form.fields['participation'].queryset = ProjectParticipation.objects.filter(user=self.request.user)
         return form
 
     # def form_valid(self, form):

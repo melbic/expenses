@@ -1,0 +1,37 @@
+{% load extra_tags %}
+
+<h2>Receipts</h2>
+<table class="receipts table table-striped" width=auto>
+    <thead>
+    <tr>
+        <th class="receipt.title">Title</th>
+        <th class="receipt.amount">Amount in CHF</th>
+        {%  if not disable_project %}
+        <th class="receipt.project">Project</th>
+        {% endif %}
+        <th class="receipt.delete">Delete?</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for receipt in receipts %}
+        <tr>
+            <td class="receipt.title"><a class="detail" href="{{ receipt.get_absolute_url}}"> {{ receipt.title }}</a></td>
+            <td class="receipt.amount">{{ receipt.amount_chf }}</td>
+           {%  if not disable_project %}
+            <td class="receipt.project">{{ receipt.participation.project }}</td>
+            {%  endif %}
+            </a>
+            <td class="receipt.delete"><a id="{{ receipt.id }}" href="#" class="delete" >Delete </a></td>
+        </tr>
+    {% endfor %}
+    <tfoot>
+    <tr>
+        <th class="receipt.title">Total</th>
+        <th class="receipt.amount">{{ receipts|total_sum }}</th>
+        <th/>
+        <th/>
+    </tr>
+    </tfoot>
+    </tbody>
+</table>

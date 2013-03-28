@@ -3,33 +3,19 @@
 {% block page_title %} Home {% endblock %}
 {% block content %}
     {{ block.super }}
-    <div id="dialog" title="Confirm delete">Are you sure?</div>
+    <div id="dialog" title="Confirm delete"></div>
 
-    {%  include "receipts/receipts_table.html" %}
+    {%  include "receipts/receipts_table.html" with disable_project=True%}
 
-    <h2>Projects</h2>
-    <table class="receipts table table-striped" width=auto>
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for participation in participations %}
-            <tr>
-                <td><a class="detail" href="{{ participation.get_absolute_url}}"> {{ participation.project.name }}</a></td>
-                <td>{{ participation.project.start_date }}</td>
-                <td>{{ participation.project.end_date }}</td>
-                </a>
-            </tr>
 
-        {% endfor %}
-        </tbody>
-    </table>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" name="submit" value="Add" />
+    </form>
 
-    {% csrf_token %}
 {% endblock %}
 {% block extra_js %}
     {{ block.super }}
